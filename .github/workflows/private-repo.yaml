@@ -1,0 +1,31 @@
+name: private go mod
+on:
+  push:
+    branches:
+    - '*'
+  pull_request:
+    branches:
+    - '*'
+jobs:
+  build:
+    name: Test private go mod vendor
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Set up Go 1.14
+        uses: actions/setup-go@v2
+        id: go
+        with:
+          go-version: 1.14
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Run go vendor and go run
+        run: cd private-repo && make
+        env:
+          GITHUB_TOKEN: ${{ secrets.X_GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ secrets.X_GITHUB_USERNAME }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          GITLAB_USERNAME: ${{ secrets.GITLAB_USERNAME }}
+          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
+          BITBUCKET_USERNAME: ${{ secrets.BITBUCKET_USERNAME }}
